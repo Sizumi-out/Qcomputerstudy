@@ -64,6 +64,7 @@ modern_Bell = chain(
     n,
     put(2=>H),
     control(2, 1=>Rx(pi/2))
+    # どうもこれはRXXじゃないらしい
 )
 
 apply!(zero_state(2), modern_Bell)
@@ -85,6 +86,7 @@ savefig(A, path_svg)
 
 
 # 角度の変化をアニメーションにできないか？
+# 結論：yao.jlでRXXゲートが見つからない...
 
 # アニメーションのインスタンス生成
 anim = Animation()
