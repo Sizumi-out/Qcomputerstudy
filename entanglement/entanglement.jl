@@ -1,6 +1,6 @@
 using Yao
 using Plots
-using StatsBase
+using StatsBase # fit関数に用いる
 
 n = 2
 Bell_circuit = chain(
@@ -62,11 +62,45 @@ GHZ4_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
 n = 2
 modern_Bell = chain(
     n,
-
+    put(2=>H),
+    control(2, 1=>Rx(pi/2))
 )
 
-A = plot(Bell_graff, GHZ3_graff, GHZ4_graff, legend =:none)
+apply!(zero_state(2), modern_Bell)
 
-path_png = "julia_code/plot_practice/entanglement.png"
+results = zero_state(2) |> modern_Bell |> r->measure(r, nshots = 1000)
 
-savefig(A, path_png)
+hist = fit(Histogram, Int.(results), 0:2^n)
+
+MBell_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
+
+# GHZのグラフを一つにまとめて保存
+
+A = plot(Bell_graff, GHZ3_graff, GHZ4_graff, MBell_graff, legend =:none)
+
+path_png = "program/julia_code/plot_practice/entanglement.png"
+path_svg = "program/julia_code/plot_practice/entanglement.svg"
+
+savefig(A, path_svg)
+
+
+# 角度の変化をアニメーションにできないか？
+
+# アニメーションのインスタンス生成
+anim = Animation()
+
+for x = 0:0.05π:2π
+    m_Bell = chain(
+        2,
+        put(2=>H),
+        control(2, 1=>Rx(x))
+    )
+
+    apply!(zero_state(2), m_Bell)
+    results = zero_state(2) |> m_Bell |> r->measure(r, nshots = 1000)
+    hist = fit(Histogram, Int.(results), 0:4)
+    MBell_plt = bar(hist.edges[1] .- 0.5, hist.weights, label = "θ = $x", ylims = (0, 1000))
+    frame(anim, MBell_plt)
+end
+
+gif(anim,"anim_entangle.gif", fps = 10)

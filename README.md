@@ -6,8 +6,8 @@
 <br>
 
 ## entanglement.jl
-2,3,4bitで量子エンタングルメントを実行しました。  
-できれば、[こちら]()も追加予定です。
+2,3,4bitで量子エンタングルメントを形成し実行しました。ベル状態とか、GHZ状態のことです。  
+いずれ、[こちら](https://qiita.com/YuichiroMinato/items/5e85a96e9279247425f2)も追加予定です。
 <br>
 
 ## yao_tutrial.jl
