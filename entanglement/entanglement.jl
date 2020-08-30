@@ -9,9 +9,10 @@ Bell_circuit = chain(
     control(2, 1=>X),
 )
 
-apply!(zero_state(2), Bell_circuit)
+# 一応いらないが、チュートリアルにしたがうとこうなる
+apply!(zero_state(n), Bell_circuit)
 
-results = zero_state(2) |> Bell_circuit |> r->measure(r, nshots = 1000)
+results = zero_state(n) |> Bell_circuit |> r->measure(r, nshots = 1000)
 
 hist = fit(Histogram, Int.(results), 0:2^n)
 
