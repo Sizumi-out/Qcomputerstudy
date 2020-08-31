@@ -2,7 +2,7 @@ using Yao
 using Plots
 using StatsBase # fit関数に用いる
 
-n = 2
+n = 2 # bit数
 Bell_circuit = chain(
     n,
     put(2=>H),
@@ -20,19 +20,16 @@ Bell_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
 
 
 # https://www.youtube.com/watch?v=agLUyLqPWqM
-n = 3
 GHZ_3circuit_a = chain(
-    n,  # 3qubits
+    3,  # 3qubits
     put(1=>H),
     control(1,2=>X),
     control(2,3=>X),
 )
 
-apply!(zero_state(3), GHZ_3circuit_a)
-
 results = zero_state(3) |> GHZ_3circuit_a |> r->measure(r, nshots = 1000)
 
-hist = fit(Histogram, Int.(results), 0:2^n)
+hist = fit(Histogram, Int.(results), 0:2^3)
 
 GHZ3_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
 
