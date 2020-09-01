@@ -5,19 +5,18 @@ using StatsBase # fit関数に用いる
 n = 2 # bit数
 Bell_circuit = chain(
     n,
-    put(2=>H),
-    control(2, 1=>X),
+    put(1=>H),
+    control(1, 2=>X),
 )
 
-# 一応いらないが、チュートリアルにしたがうとこうなる
-apply!(zero_state(n), Bell_circuit)
+# いらないが、チュートリアルにしたがうとこうなります。
+a = apply!(zero_state(n), Bell_circuit)
 
 results = zero_state(n) |> Bell_circuit |> r->measure(r, nshots = 1000)
 
 hist = fit(Histogram, Int.(results), 0:2^n)
 
 Bell_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
-
 
 # https://www.youtube.com/watch?v=agLUyLqPWqM
 GHZ_3circuit_a = chain(
@@ -44,8 +43,6 @@ GHZ_4circuit = chain(
     control(4, 3=>X),
     repeat(H, 1:4), # Hgate, 1:4-qubits
 )
-
-apply!(zero_state(4), GHZ_4circuit)
 
 results = zero_state(4) |> GHZ_4circuit |> r->measure(r, nshots = 1000)
 
