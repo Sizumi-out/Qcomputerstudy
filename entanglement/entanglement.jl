@@ -36,7 +36,20 @@ GHZ3_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
 path_svg = "program/sizumi-homepage/images/quantum/yao_entanglement/GHZ3_graff.svg" # ディレクトリのパス
 savefig(GHZ3_graff, path_svg)
 
+GHZ4a_circuit = chain(
+    4,  # 4qubits
+    put(1=>H),
+    control(1,2=>X),
+    control(2,3=>X),
+    control(3,4=>X),
+)
+results = zero_state(4) |> GHZ4a_circuit |> r->measure(r, nshots = 1000)
 
+hist = fit(Histogram, Int.(results), 0:2^4)
+
+GHZ4a_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
+
+# tutrial ver.
 GHZ_4circuit = chain(
     4,  # 4qubits
     put(1=>X), # 1: Xgate
