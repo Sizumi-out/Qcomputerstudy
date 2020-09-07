@@ -10,7 +10,7 @@ Bell_circuit = chain(
 )
 
 # いらないが、チュートリアルにしたがうとこうなります。
-a = apply!(zero_state(n), Bell_circuit)
+apply!(zero_state(n), Bell_circuit)
 
 results = zero_state(n) |> Bell_circuit |> r->measure(r, nshots = 1000)
 
@@ -19,18 +19,22 @@ hist = fit(Histogram, Int.(results), 0:2^n)
 Bell_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
 
 # https://www.youtube.com/watch?v=agLUyLqPWqM
-GHZ_3circuit_a = chain(
+GHZ3_circuit = chain(
     3,  # 3qubits
     put(1=>H),
     control(1,2=>X),
     control(2,3=>X),
 )
 
-results = zero_state(3) |> GHZ_3circuit_a |> r->measure(r, nshots = 1000)
+results = zero_state(3) |> GHZ3_circuit |> r->measure(r, nshots = 1000)
 
 hist = fit(Histogram, Int.(results), 0:2^3)
 
 GHZ3_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
+
+# グラフを保存
+path_svg = "program/sizumi-homepage/images/quantum/yao_entanglement/GHZ3_graff.svg" # ディレクトリのパス
+savefig(GHZ3_graff, path_svg)
 
 
 GHZ_4circuit = chain(
