@@ -67,7 +67,7 @@ hist = fit(Histogram, Int.(results), 0:2^4)
 
 GHZ4_graff = bar(hist.edges[1] .- 0.5, hist.weights, legend =:none)
 
-# グラフを保存
+# Graff: Save
 path_svg = "program/sizumi-homepage/images/quantum/yao_entanglement/GHZ4_graff.svg"
 savefig(GHZ4_graff, path_svg)
 
